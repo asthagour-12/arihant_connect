@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Header from "../Header.jsx";
+import Header from "./Header.jsx";
 import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
 import { toast } from "react-toastify";
-import ArihantProductsSection from "../ArihantProducts.jsx";
+import ArihantProductsSection from "./ArihantProducts.jsx";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export default function ActiveClient() {

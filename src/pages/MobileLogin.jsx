@@ -5,7 +5,7 @@ import SubNavigation from "../components/layout/SubNavigation";
 import DataTable from "../components/common/DataTable";
 import FilterSection, { FilterItem, ApplyButton, DateInput } from "../components/common/FilterSection";
 import StatsCard from "../components/common/StatsCard";
-import { validateDates } from "../utils/dateValidation";
+import { validateDates } from "./dateValidation";
 import { toast } from "react-toastify";
 import ResultsHeader from "../components/common/ResultsHeader";
 

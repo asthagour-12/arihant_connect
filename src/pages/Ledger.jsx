@@ -6,7 +6,7 @@ import LedgerTable from "../components/common/LedgerTable";
 import ResultsHeader from "../components/common/ResultsHeader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { validateDates } from "../utils/dateValidation";
+import { validateDates } from "./dateValidation";
 import { toast } from "react-toastify";
 import { getBrokerageLedger } from "../api/apiService";
 import CalendarHeader from "../components/common/CalendarHeader";

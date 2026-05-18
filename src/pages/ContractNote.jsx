@@ -3,7 +3,7 @@ import Layout from "../components/layout/Layout";
 import SubNavigation from "../components/layout/SubNavigation";
 import FilterBar, { FilterItem, ApplyButton, SearchInput, DateInput } from "../components/common/FilterBar";
 import Table from "../components/common/Table";
-import { validateDates } from "../utils/dateValidation";
+import { validateDates } from "./dateValidation";
 import { toast } from "react-toastify";
 
 const ContractNote = () => {

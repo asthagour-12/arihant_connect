@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { L } from "../styles/legacyStyles";
 import CustomDatePicker from "../components/common/CustomDatePicker";
-import { validateDates } from "../utils/dateValidation";
+import { validateDates } from "./dateValidation";
 import { toast } from "react-toastify";
 import { Calendar, Download } from "lucide-react";
 import axios from "axios";

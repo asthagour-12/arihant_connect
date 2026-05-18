@@ -1,5 +1,6 @@
 import React from "react";
 
+// Keeping the inline helper object intact so pages using style={L.wrapper} don't break.
 export const L = {
   wrapper: {
     padding: "20px",
@@ -19,60 +20,44 @@ export const L = {
   },
 };
 
+// 🔹 LField converted completely to Tailwind CSS
 export const LField = ({ label, children }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-    <label style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+  <div className="flex flex-col gap-2">
+    <label className="text-[14px] font-semibold text-gray-500">
       {label}
     </label>
     {children}
   </div>
 );
 
-export const LDateInput = (props) => (
+// 🔹 LDateInput converted completely to Tailwind CSS
+export const LDateInput = ({ className = "", style, ...props }) => (
   <input
     type="date"
     {...props}
-    style={{
-      padding: "10px 14px",
-      borderRadius: "4px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-      outline: "none",
-      ...props.style,
-    }}
+    style={style}
+    className={`px-3.5 py-2.5 rounded border border-gray-300 text-[14px] outline-none focus:ring-2 focus:ring-green-400/50 focus:border-[#34b350] transition-all bg-white ${className}`}
   />
 );
 
-export const LSearchInput = (props) => (
+// 🔹 LSearchInput converted completely to Tailwind CSS
+export const LSearchInput = ({ className = "", style, width, ...props }) => (
   <input
     type="text"
     {...props}
-    style={{
-      padding: "10px 14px",
-      borderRadius: "4px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-      outline: "none",
-      width: props.width || "300px",
-      ...props.style,
-    }}
+    style={{ width: width || "300px", ...style }}
+    className={`px-3.5 py-2.5 rounded border border-gray-300 text-[14px] outline-none focus:ring-2 focus:ring-green-400/50 focus:border-[#34b350] transition-all bg-white ${className}`}
   />
 );
 
-export const LSelectInput = ({ options, value, onChange, width, ...props }) => (
+// 🔹 LSelectInput converted completely to Tailwind CSS
+export const LSelectInput = ({ options, value, onChange, width, className = "", style, ...props }) => (
   <select
     value={value}
     onChange={onChange}
-    style={{
-      padding: "10px 14px",
-      borderRadius: "4px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-      outline: "none",
-      width: width || "100%",
-      backgroundColor: "white",
-      ...props.style,
-    }}
+    style={{ width: width || "100%", ...style }}
+    {...props}
+    className={`px-3.5 py-2.5 rounded border border-gray-300 text-[14px] outline-none bg-white focus:ring-2 focus:ring-green-400/50 focus:border-[#34b350] transition-all ${className}`}
   >
     {options.map((opt) => (
       <option key={opt} value={opt}>
@@ -82,20 +67,12 @@ export const LSelectInput = ({ options, value, onChange, width, ...props }) => (
   </select>
 );
 
-export const LApplyBtn = ({ label, onClick }) => (
+// 🔹 LApplyBtn converted completely to Tailwind CSS
+export const LApplyBtn = ({ label, onClick, className = "", style }) => (
   <button
     onClick={onClick}
-    style={{
-      backgroundColor: "#34b350",
-      color: "white",
-      padding: "10px 24px",
-      borderRadius: "4px",
-      border: "none",
-      fontSize: "14px",
-      fontWeight: "bold",
-      cursor: "pointer",
-      height: "42px",
-    }}
+    style={style}
+    className={`bg-[#34b350] hover:bg-[#2da145] text-white px-6 py-2.5 rounded border-none text-[14px] font-bold cursor-pointer h-[42px] transition-all active:scale-95 shadow-sm hover:shadow-md ${className}`}
   >
     {label}
   </button>
