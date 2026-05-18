@@ -75,6 +75,29 @@ function Dashboard() {
 
   // OTP States
   const [showOtpModal, setShowOtpModal] = useState(false);
+
+  // App Login Client Codes Modal States
+  const [showAppLoginModal, setShowAppLoginModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+
+  const clientCodesList = [
+    "138000285",
+    "138000286",
+    "188001247",
+    "188001885",
+    "188003119",
+    "188008438",
+    "AP0110283",
+  ];
+
+  const filteredClients = clientCodesList.filter((code) =>
+    code.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const sortedClients = [...filteredClients].sort((a, b) => {
+    return sortAsc ? a.localeCompare(b) : b.localeCompare(a);
+  });
   const [otp, setOtp] = useState("");
   const [isRevealed, setIsRevealed] = useState(() => {
     return sessionStorage.getItem("revenue_verified") === "true";
@@ -266,24 +289,31 @@ function Dashboard() {
       {/* Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-[15px] p-[15px] mt-[60px]">
         {[
-          { label: "Total Branch", value: "10" },
-          { label: "Total Clients", value: "15,596" },
-          { label: "Active Clients", value: "11,594" },
-          { label: "Traded Clients", value: "1,587" },
-          { label: "Inactive Clients", value: "4,002" },
+          { label: "Total Clients", value: "16" },
+          { label: "Active Clients", value: "14" },
+          { label: "New Clients", value: "0" },
+          { label: "Inactive Clients", value: "2" },
+          { label: "Total App Login", value: "7" },
         ].map((card, idx) => (
           <div
             key={idx}
-            className="bg-white p-2.5 rounded-xl text-center shadow-[0_2px_8px_rgba(0,0,0,0.05)] w-full max-w-[210px] mx-auto cursor-pointer flex flex-col justify-center transition-all hover:shadow-lg hover:-translate-y-1"
+            onClick={() => {
+              if (card.label === "Total App Login") navigate("/client-code-list");
+              if (card.label === "Inactive Clients") navigate("/inactive-clients");
+              if (card.label === "Active Clients") navigate("/active-clients");
+              if (card.label === "Total Clients") navigate("/total-clients");
+              if (card.label === "New Clients") navigate("/new-clients");
+            }}
+            className="bg-white p-2.5 rounded-md text-center shadow-[0_2px_8px_rgba(0,0,0,0.05)] w-full max-w-[210px] mx-auto cursor-pointer flex flex-col justify-center transition-all hover:shadow-lg hover:-translate-y-1"
           >
-            <h2 className="m-0 text-gray-900 text-base font-normal">{card.value}</h2>
-            <p className="m-0 mt-1 text-[9px] text-gray-400 font-bold uppercase tracking-widest">{card.label}</p>
+            <h2 className="m-0 text-black text-xl font-bold">{card.value}</h2>
+            <p className="m-0 mt-1 text-[11px] text-black font-bold uppercase tracking-widest">{card.label}</p>
           </div>
         ))}
       </div>
 
       {/* New Revenue Dashboard Component */}
-      <div className="bg-white p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] m-[15px] border border-gray-50">
+      <div className="bg-white p-6 rounded-none shadow-[0_4px_20px_rgba(0,0,0,0.05)] m-[15px] border border-gray-50">
         <h2 className="m-0 mb-0.5 text-[15px] text-gray-800 font-normal uppercase tracking-tight">My revenue details</h2>
 
         {/* Horizontal Divider Line */}
@@ -303,7 +333,7 @@ function Dashboard() {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Carousel Section */}
           <div className="w-full lg:w-[65%] my-auto relative group">
-            <div className="relative overflow-hidden shadow-2xl h-[330px] rounded-3xl border border-gray-100">
+            <div className="relative overflow-hidden shadow-2xl h-[380px] rounded-none border border-gray-100">
               <div
                 className={`flex h-full ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -320,18 +350,18 @@ function Dashboard() {
                 ))}
               </div>
 
-              {/* Navigation Controls - Large Chevrons on Hover */}
+              {/* Navigation Controls - Transparent, Always Visible, and Smaller Arrows */}
               <button
                 onClick={handlePrev}
-                className="absolute left-6 top-1/2 -translate-y-1/2 z-50 text-white flex items-center justify-center transition-all opacity-70 hover:opacity-100 bg-black/10 hover:bg-black/30 w-12 h-12 rounded-full border-none cursor-pointer"
+                className="absolute left-6 top-1/2 -translate-y-1/2 z-50 text-white flex items-center justify-center transition-all opacity-75 hover:opacity-100 bg-transparent border-none cursor-pointer"
               >
-                <i className="fa-solid fa-chevron-left text-2xl drop-shadow-lg"></i>
+                <i className="fa-solid fa-chevron-left text-xl drop-shadow-md"></i>
               </button>
               <button
                 onClick={handleNext}
-                className="absolute right-6 top-1/2 -translate-y-1/2 z-20 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 bg-transparent border-none p-0 outline-none cursor-pointer"
+                className="absolute right-6 top-1/2 -translate-y-1/2 z-50 text-white flex items-center justify-center transition-all opacity-75 hover:opacity-100 bg-transparent border-none cursor-pointer"
               >
-                <i className="fa-solid fa-chevron-right text-4xl drop-shadow-lg"></i>
+                <i className="fa-solid fa-chevron-right text-xl drop-shadow-md"></i>
               </button>
 
               {/* Minimal Dots */}
@@ -349,7 +379,7 @@ function Dashboard() {
                         setIsTransitioning(true);
                         setCurrentIndex(idx + 1);
                       }}
-                      className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${isActive ? "bg-[#34b350] w-6" : "bg-white/50 w-1.5"}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${isActive ? "bg-white w-6" : "bg-white/50 w-1.5"}`}
                     ></div>
                   );
                 })}
@@ -358,7 +388,7 @@ function Dashboard() {
           </div>
 
           {/* Video Section */}
-          <div className="w-full lg:w-[35%] h-[330px]">
+          <div className="w-full lg:w-[35%] h-[380px]">
             <VideoCard />
           </div>
         </div>
@@ -374,8 +404,8 @@ function Dashboard() {
             rel="noopener noreferrer"
             className="group bg-white p-[15px] rounded-lg flex items-center justify-center gap-3 cursor-pointer shadow-[0_2px_5px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1 hover:bg-[#f3fff5] hover:shadow-xl border border-gray-50 hover:border-green-100 no-underline active:scale-95"
           >
-            <span className="text-[14px] font-bold text-[#4ade80] group-hover:text-[#22c55e] transition-colors">{service.name}</span>
-            <span className="text-[#34b350] font-black text-lg group-hover:translate-x-1 transition-transform">{'>'}</span>
+            <span className="text-[14px] font-bold text-[#444444] group-hover:text-[#34b350] transition-colors">{service.name}</span>
+            <span className="text-[#666666] group-hover:text-[#34b350] font-black text-lg group-hover:translate-x-1 transition-all">{'>'}</span>
           </a>
         ))}
       </div>

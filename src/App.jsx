@@ -38,6 +38,11 @@ import KRAStatusPage from './KRAStatusPage.jsx';
 import HoldingReport from './HoldingReport.jsx';
 import ArihantProducts from './ArihantProducts.jsx';
 import LoginPage from './LoginPage.jsx';
+import ClientCodeList from './ClientCodeList.jsx';
+import InactiveClient from './pages/InactiveClient.jsx';
+import ActiveClient from './pages/ActiveClient.jsx';
+import TotalClient from './pages/TotalClient.jsx';
+import NewClient from './pages/NewClient.jsx';
 
 function AppContent() {
   const location = useLocation();
@@ -50,6 +55,11 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/client-code-list" element={<ClientCodeList />} />
+        <Route path="/inactive-clients" element={<InactiveClient />} />
+        <Route path="/active-clients" element={<ActiveClient />} />
+        <Route path="/total-clients" element={<TotalClient />} />
+        <Route path="/new-clients" element={<NewClient />} />
         <Route path="/arihant-products" element={<ArihantProducts />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/account-opening" element={<KRAStatusPage />} />

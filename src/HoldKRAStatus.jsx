@@ -33,7 +33,7 @@ export default function HoldKRAStatus() {
       // API call example - replace with your actual API endpoint
       const response = await fetch(`/api/hold-kra-status?clientCode=${filter}`);
       const data = await response.json();
-      
+
       // If API is not ready, fallback to mock data
       if (!response.ok || data.length === 0) {
         const mockData = [
@@ -132,41 +132,41 @@ export default function HoldKRAStatus() {
               if (e.key === "Enter") handleSearch();
             }}
           />
-          
+
           {/* Search Icon */}
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-            <svg 
-              className="w-5 h-5 text-gray-400" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
           </div>
-          
+
           {/* Clear Button */}
           {filter && (
             <button
               onClick={() => setFilter("")}
               className="absolute right-12 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
             >
-              <svg 
-                className="w-4 h-4 text-gray-500" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-gray-500"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M6 18L18 6M6 6l12 12" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>
@@ -179,52 +179,53 @@ export default function HoldKRAStatus() {
         <div className="min-w-[1200px]">
           {/* Header */}
           <div className="grid grid-cols-[150px_150px_250px_150px_180px_180px_1fr] bg-[#34b44a] text-white text-[13px] font-semibold">
-          {headers.map((item, index) => (
-            <div
-              key={index}
-              onClick={() => handleSort(item.key)}
-              className="px-4 py-2 border-r border-white/20 flex items-center justify-between cursor-pointer select-none"
-            >
-              <span>{item.label}</span>
-              <SortIcon column={item.key} />
-            </div>
-          ))}
-        </div>
-
-        {/* Body */}
-        {results.length === 0 ? (
-          <>
-            <div className="bg-white h-[45px] flex items-center px-6 text-[15px] text-gray-500 border-x border-b border-gray-200">
-              No data to display
-            </div>
-
-            <div className="bg-white px-6 py-2 text-gray-400 border-x border-b border-gray-200 text-[13px]">
-              0 total
-            </div>
-          </>
-        ) : (
-          <>
+            {headers.map((item, index) => (
               <div
                 key={index}
-                className="grid grid-cols-[150px_150px_250px_150px_180px_180px_1fr] bg-[#f2f2f2] border-b border-gray-200 text-[14px] hover:bg-gray-100 transition-colors"
+                onClick={() => handleSort(item.key)}
+                className="px-4 py-2 border-r border-white/20 flex items-center justify-between cursor-pointer select-none"
               >
-                <div className="px-4 py-4 border-r border-gray-300">{row.clientCode}</div>
-                <div className="px-4 py-4 border-r border-gray-300">{row.pan}</div>
-                <div className="px-4 py-4 border-r border-gray-300">{row.clientName}</div>
-                <div className="px-4 py-4 border-r border-gray-300">{row.branchCode}</div>
-                <div className="px-4 py-4 border-r border-gray-300">{row.kraName}</div>
-                <div className="px-4 py-4 border-r border-gray-300 text-green-600 font-bold">
-                  {row.kraStatus}
-                </div>
-                <div className="px-4 py-4">{row.reason}</div>
+                <span>{item.label}</span>
+                <SortIcon column={item.key} />
               </div>
             ))}
+          </div>
 
-            <div className="bg-white px-6 py-2 text-black font-bold border-b border-gray-200 text-[14px]">
-              {results.length} total
-            </div>
-          </>
-        )}
+          {/* Body */}
+          {results.length === 0 ? (
+            <>
+              <div className="bg-white h-[45px] flex items-center px-6 text-[15px] text-gray-500 border-x border-b border-gray-200">
+                No data to display
+              </div>
+
+              <div className="bg-white px-6 py-2 text-gray-400 border-x border-b border-gray-200 text-[13px]">
+                0 total
+              </div>
+            </>
+          ) : (
+            <>
+              {results.map((row, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-[150px_150px_250px_150px_180px_180px_1fr] bg-[#f2f2f2] border-b border-gray-200 text-[14px] hover:bg-gray-100 transition-colors"
+                >
+                  <div className="px-4 py-4 border-r border-gray-300">{row.clientCode}</div>
+                  <div className="px-4 py-4 border-r border-gray-300">{row.pan}</div>
+                  <div className="px-4 py-4 border-r border-gray-300">{row.clientName}</div>
+                  <div className="px-4 py-4 border-r border-gray-300">{row.branchCode}</div>
+                  <div className="px-4 py-4 border-r border-gray-300">{row.kraName}</div>
+                  <div className="px-4 py-4 border-r border-gray-300 text-green-600 font-bold">
+                    {row.kraStatus}
+                  </div>
+                  <div className="px-4 py-4">{row.reason}</div>
+                </div>
+              ))}
+
+              <div className="bg-white px-6 py-2 text-black font-bold border-b border-gray-200 text-[14px]">
+                {results.length} total
+              </div>
+            </>
+          )}
         </div>
       </div>
 

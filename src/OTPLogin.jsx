@@ -1,5 +1,6 @@
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { sendOtp, validateOtp, resendOtp } from "./api/auth";
 
 const OTPLogin = () => {
     const [mobile, setMobile] = useState('');
@@ -8,6 +9,33 @@ const OTPLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [canResend, setCanResend] = useState(false);
+    const [resendTimer, setResendTimer] = useState(120);
+    const [otpError, setOTPError] = useState('');
+
+    // Timer logic
+    const startResendTimer = () => {
+        setCanResend(false);
+        setResendTimer(120);
+    };
+
+    useEffect(() => {
+        let timer;
+        if (showOTP && resendTimer > 0) {
+            timer = setInterval(() => {
+                setResendTimer((prev) => {
+                    if (prev <= 1) {
+                        setCanResend(true);
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [showOTP, resendTimer]);
+
 
     const handleSendOTP = async (e) => {
         e.preventDefault();
@@ -16,19 +44,19 @@ const OTPLogin = () => {
         setSuccess('');
 
         try {
-            const response = await axios.post('http://localhost:5000/api/send-otp', {
-                mobile: mobile
-            });
-
-            if (response.data.success) {
+            const data = await sendOtp(mobile);
+            
+            if (data.status === true || data.success === true) {
                 setShowOTP(true);
                 setSuccess('OTP sent successfully!');
                 toast.success('OTP sent successfully!');
+                startResendTimer();
             } else {
-                setError(response.data.message);
-                toast.error(response.data.message);
+                setError(data.message || 'Failed to send OTP');
+                toast.error(data.message || 'Failed to send OTP');
             }
         } catch (error) {
+            console.error(error);
             setError('Failed to send OTP. Please try again.');
             toast.error('Failed to send OTP. Please try again.');
         } finally {
@@ -41,24 +69,49 @@ const OTPLogin = () => {
         setLoading(true);
         setError('');
         setSuccess('');
+        setOTPError('');
 
         try {
-            const response = await axios.post('http://localhost:5000/api/verify-otp', {
-                mobile: mobile,
-                otp: otp
-            });
+            const data = await validateOtp(mobile, otp);
 
-            if (response.data.success) {
+            if (data.status === true || data.success === true) {
                 setSuccess('OTP verified successfully!');
                 toast.success('OTP verified successfully!');
-                window.location.href = response.data.redirectUrl;
+                // Store token if available
+                if (data.token || data.access_token) {
+                    localStorage.setItem('authToken', data.token || data.access_token);
+                    localStorage.setItem('isLoggedIn', 'true');
+                }
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    window.location.href = '/dashboard';
+                }
             } else {
-                setError(response.data.message);
-                toast.error(response.data.message);
+                setOTPError(data.message || 'Invalid OTP');
+                toast.error(data.message || 'Invalid OTP');
             }
         } catch (error) {
-            setError('Failed to verify OTP. Please try again.');
+            console.error(error);
+            setOTPError('Failed to verify OTP. Please try again.');
             toast.error('Failed to verify OTP. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const resendOTP = async () => {
+        if (!canResend) return;
+        try {
+            setLoading(true);
+            const response = await resendOtp();
+            console.log("Resend OTP:", response);
+            toast.success("OTP Resent Successfully!");
+            startResendTimer();
+        } catch (error) {
+            console.error(error);
+            setOTPError("Failed to resend OTP");
+            toast.error("Failed to resend OTP");
         } finally {
             setLoading(false);
         }
@@ -153,6 +206,23 @@ const OTPLogin = () => {
                             >
                                 {loading ? 'VERIFYING...' : 'VERIFY OTP'}
                             </button>
+
+                            <div className="text-center pt-4">
+                                {canResend ? (
+                                    <button
+                                        type="button"
+                                        onClick={resendOTP}
+                                        className="text-[#34b350] font-black hover:underline uppercase tracking-widest text-[11px]"
+                                        disabled={loading}
+                                    >
+                                        Resend OTP
+                                    </button>
+                                ) : (
+                                    <p className="text-gray-400 font-bold text-[11px] uppercase tracking-widest">
+                                        Resend OTP in {Math.floor(resendTimer / 60)}:{(resendTimer % 60).toString().padStart(2, '0')}
+                                    </p>
+                                )}
+                            </div>
                         </form>
                     )}
 

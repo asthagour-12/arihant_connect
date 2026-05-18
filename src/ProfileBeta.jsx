@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "./logo-arihant-capital.png";
+import logo from "./assets/logo-arihant-capital.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Header from "./Header.jsx";
 

@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import banner from './left-banner.svg';
-import logo from './logo-arihant-capital.png';
-import smartphone from './smartphone.svg';
+import banner from './assets/left-banner.svg';
+import logo from './assets/logo-arihant-capital.png';
+import smartphone from './assets/smartphone.svg';
 import Footer from './Footer';
+import {
+  loginUser,
+  sendOtp,
+  validateOtp,
+  resendOtp
+} from "./api/auth";
 
 const LoginPage = () => {
   const [branchCode, setBranchCode] = useState('');
@@ -41,48 +47,45 @@ const LoginPage = () => {
   const handleBranchCodeSubmit = async (e) => {
     e.preventDefault();
 
-    // Handle empty branch code
     if (!branchCode.trim()) {
-      setError('Please enter your branch code');
+      setError("Please enter your branch code");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/send-otp',
-        {
-          manager_id: branchCode.trim()
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      // LOGIN API
+      const loginData = await loginUser(branchCode);
+      console.log("Login Response:", loginData);
 
-      console.log('Branch Code API Response:', response.data);
+      const mobileNumber =
+        loginData.mobileNumber ||
+        loginData.mobile ||
+        loginData.data?.mobileNumber;
 
-      // STEP 2: Show OTP card on success
+      if (!mobileNumber) {
+        setError("Mobile number not found");
+        return;
+      }
+
+      // STORE MOBILE
+      localStorage.setItem("mobileNumber", mobileNumber);
+
+      // SEND OTP
+      const otpData = await sendOtp(mobileNumber);
+      console.log("OTP Response:", otpData);
+
       setShowOTP(true);
       startResendTimer();
 
     } catch (error) {
-      console.error('Branch Code API Error:', error);
-
-      // STEP 5: Error handling
-      if (error.response) {
-        // Server responded with error status
-        setError(error.response.data.message || 'Invalid branch code. Please try again.');
-      } else if (error.request) {
-        // Network error
-        setError('Network error. Please check your connection and try again.');
-      } else {
-        // Other error
-        setError('An error occurred. Please try again.');
-      }
+      console.error(error);
+      setError(
+        error.response?.data?.message ||
+        "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -110,59 +113,37 @@ const LoginPage = () => {
   const handleOTPSubmit = async (e) => {
     e.preventDefault();
 
-    // Handle empty OTP
     if (!otp.trim()) {
-      setOTPError('Please enter your OTP');
+      setOTPError("Please enter OTP");
       return;
     }
 
     setLoading(true);
-    setOTPError('');
+    setOTPError("");
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/verify-otp',
-        {
-          manager_id: branchCode.trim(),
-          otp: otp.trim()
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const mobileNumber = localStorage.getItem("mobileNumber");
+      const response = await validateOtp(mobileNumber, otp);
+      console.log("Verify OTP:", response);
 
-      console.log('OTP Verification API Response:', response.data);
+      const authToken = response.token || response.access_token;
 
-      // STEP 4: Store token and show main content
-      const authToken = response.data.token || response.data.access_token;
       if (authToken) {
-        localStorage.setItem('authToken', authToken);
-        localStorage.setItem('branchCode', branchCode.trim());
-        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("isLoggedIn", "true");
         setToken(authToken);
         setIsAuthenticated(true);
         setShowOTP(false);
-        console.log('Login Successful! Token stored.');
       } else {
-        setOTPError('Login successful but no token received. Please try again.');
+        setOTPError("Token not found");
       }
 
     } catch (error) {
-      console.error('OTP Verification API Error:', error);
-
-      // STEP 5: Error handling
-      if (error.response) {
-        // Server responded with error status
-        setOTPError(error.response.data.message || 'Invalid OTP. Please try again.');
-      } else if (error.request) {
-        // Network error
-        setOTPError('Network error. Please check your connection and try again.');
-      } else {
-        // Other error
-        setOTPError('An error occurred. Please try again.');
-      }
+      console.error(error);
+      setOTPError(
+        error.response?.data?.message ||
+        "Invalid OTP"
+      );
     } finally {
       setLoading(false);
     }

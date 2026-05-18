@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Download, ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import logo from "./logo-arihant-capital.png";
+import logo from "./assets/logo-arihant-capital.png";
 import Header from "./Header.jsx";
 
 export default function ClickToCall() {

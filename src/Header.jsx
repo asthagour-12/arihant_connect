@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import logo from './logo-arihant-capital.png';
+import logo from './assets/logo-arihant-capital.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,67 +19,67 @@ const Header = () => {
         <nav className="hidden lg:flex items-center gap-6 h-full text-white/90 text-[14px] font-semibold">
           <span
             onClick={() => navigate("/dashboard")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/dashboard") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/dashboard") ? "text-white font-black" : ""}`}
           >
             Dashboard
           </span>
           <span
             onClick={() => navigate("/reports")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/reports") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/reports") ? "text-white font-black" : ""}`}
           >
             Reports
           </span>
           <span
             onClick={() => navigate("/account-opening")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/account-opening") || location.pathname.startsWith("/kra-status") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/account-opening") || location.pathname.startsWith("/kra-status") ? "text-white font-black" : ""}`}
           >
             Account Opening
           </span>
           <span
             onClick={() => navigate("/download")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/download") || location.pathname.startsWith("/marketing-material") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/download") || location.pathname.startsWith("/marketing-material") ? "text-white font-black" : ""}`}
           >
             Download
           </span>
           <span
             onClick={() => navigate("/researchcall")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/researchcall") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/researchcall") ? "text-white font-black" : ""}`}
           >
             Research Call
           </span>
           <span
             onClick={() => navigate("/dealslip")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/dealslip") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/dealslip") ? "text-white font-black" : ""}`}
           >
             Deal Slip
           </span>
           <span
             onClick={() => navigate("/third-party")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/third-party") || location.pathname.startsWith("/mutual-fund") || location.pathname.startsWith("/sip-calculator") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/third-party") || location.pathname.startsWith("/mutual-fund") || location.pathname.startsWith("/sip-calculator") ? "text-white font-black" : ""}`}
           >
             Third Party
           </span>
           <span
             onClick={() => navigate("/contests")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/contests") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/contests") ? "text-white font-black" : ""}`}
           >
             Contests
           </span>
           <span
             onClick={() => navigate("/profile")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/profile") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/profile") ? "text-white font-black" : ""}`}
           >
             Profile <sup className="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full ml-1 font-bold">BETA</sup>
           </span>
           <Link
             to="/clicktocall"
-            className={`no-underline transition-all hover:text-white py-5 ${location.pathname.startsWith("/clicktocall") || location.pathname.startsWith("/followupreport") ? "border-b-4 border-white text-white font-black" : "text-white/90"}`}
+            className={`no-underline transition-all hover:text-white py-5 ${location.pathname.startsWith("/clicktocall") || location.pathname.startsWith("/followupreport") ? "text-white font-black" : "text-white/90"}`}
           >
             Click To Call
           </Link>
           <span
             onClick={() => navigate("/payout")}
-            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/payout") ? "border-b-4 border-white text-white font-black" : ""}`}
+            className={`cursor-pointer transition-all hover:text-white py-5 ${location.pathname.startsWith("/payout") ? "text-white font-black" : ""}`}
           >
             Payout
           </span>
